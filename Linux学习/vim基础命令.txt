@@ -1,0 +1,18 @@
+﻿redHat
+# startx    图形界面
+#shutdown -h now 立刻关机
+#shutdown -r now 立刻重启
+#reboot       立刻重启
+#logout       退出登录
+#su -yf     切换用户
+vim 文件编辑
+1>#vim Hello.java   进入文件编辑
+2># i       vim 文件编辑中进入插入模式
+3># esc     进入命令模式
+4> # :wq     保存文件
+5> # :q!     强制退出不保存
+6> # :set nu   设置行号
+7> # :set nonu 取消行号
+8> : /name 获取 ?name 搜索 字符 n 往上继续找
+
+《vi的使用》

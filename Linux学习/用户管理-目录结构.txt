@@ -1,0 +1,19 @@
+ root  存放root用户的相关文件
+ bin    存放常用命令
+ home   存放普通用户的相关文件
+ sbin    存放具有一定权限才可以使用的命令
+ mnt     默认挂载软驱 和 光驱的目录
+ etc     存放配置相关文件
+ var      存放经常变化的文件
+ boot    存放系统引导相关的文件
+ usr     默认安装软件的默认文件目录
+ 
+ #pwd  显示当前所在目录
+ 
+ #useradd xiaoming   添加用户xiaoming
+ #passwd   xiaoming   修改用户xiaoming的密码
+ #userdel  xiaoming   删除用户xiaoming
+ #userdel -r xiaoming  删除用户xiaoming 并且删除用户的主目录
+ 
+ 
+ 
