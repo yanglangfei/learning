@@ -6,5 +6,22 @@
 #mkdir   创建文件夹 
 #mkdir -p   文件夹不存在就创建 
 #rmkdir　　删除文件夹
-#rm -rf    强制删除  -f  强制删除   -r  循环删除文件夹下的子目录 删除非空目录
-#cp -r     copy 非空目录到其他目录
+#rm -rf    删除文件和目录，包括子目录  -f  强制删除   -r  递归删除
+#cp -r  dir1 dir2   递归复制文件(复制子目录信息)
+#touch          创建空文件
+#ln -s 源目录        建立符号链接
+#ln -s /etc/inittab inittab  【inittab指向实际目录/etc/inittab】
+tab 补全命令    tab  双击，列出补全命令
+#more   显示文件内容 带分页
+#less    显示文件内容带分页
+# |      管道命令
+#ls -l  | more   将ls -l 输出的结果交给more命令【分页显示文件】
+
+管道命令
+把上一个命令的结果交给 | 后的命令处理
+
+
+#grep -n "aaa"  hello.java   grep搜索命令【在hello.java 文件查询 aaa 字符】-n 显示行数
+#man nginx   man帮助手册 相当于-help
+#find /app -name jar     搜索命令【在/app目录下搜索名称为jar的文件和文件夹】
+#whereis nginx     显示所有包含nginx文件的目录
