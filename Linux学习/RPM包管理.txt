@@ -8,7 +8,9 @@
 #rpm -e --nodeps mysql    强制卸载，容易破坏依赖关系
 #cp sam* /app  copy以sam开头的文件到 /app目录
 
-
+#service xxx start   启动服务
+#service xxx stop    停止服务
+#service xxx restart   重启服务
   
   i 代表  install
   v  代表  verbose(提示)
@@ -20,3 +22,4 @@
 #yum -y install nginx    yum 安装软件 无提示
 #yum remove nginx       yum卸载软件 
 #apt-get install nginx   utuntu apt-get安装软件
+#yum search jdk          搜索yum源包含的jdk版本
