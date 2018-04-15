@@ -1,9 +1,0 @@
-1  crontab  任务调度器使用
-#crontab -e   进入个人任务调度编辑文件
-1> 每天凌晨两点执行  date >> /backup/mydate
-0 2 * * *  date >> /backup/mydate
-分钟  小时  日期 月份 星期几(0-6)
-2> 每分钟执行
-* * * * * date >> /backup/mydate
-3> 调度多个任务
-shell 脚本

@@ -1,0 +1,24 @@
+启动过程分析
+/etc/profile   环境变量配置
+/etc/.bashrc   指定程序自启动  
+
+配置 用户主目录下的 .bashrc 文件可以指定某些程序在用户登陆时启动
+
+将 startup.sh 路径追加到 /home/yanglf/.bashrc 内容后边 
+
+当想临时加入一个路径时，可以使用 export
+
+#export PATH=$PATH:/root
+#env | more
+
+启动过程
+1   bios  自检
+2   启动 grub/lilo
+3   运行 linux内核并自检硬件
+4   运行系统的第一个进程 init
+5   读取  /etc/inittab 进行初始化
+6   /etc/rc.d/rc.sysinit  系统初始化脚本
+7   /etc/rc.d/rcX.d/[KS]*  运行级别X配置服务   终止以X开头的服务  开始以S开头的服务
+8   /etc/rc.d/rc.local  执行本地特殊配置
+9   其他特殊配置
+

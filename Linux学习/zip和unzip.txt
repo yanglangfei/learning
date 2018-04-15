@@ -1,0 +1,13 @@
+以zip和unzip处理的.zip文件
+1> #zip file.zip 文件1 文件2       zip后接压缩后的文件
+2> #zip -m file.zip to.txt    把to.txt 文件压缩成file.zip 文件，并删除 to.txt 文件
+3> #zip -r file.zip 文件夹      将当前目录下的子目录一起压缩
+4> #zip -j file.zip *    忽略子目录的内容
+5> #zip -n .mpg: .jpg:.gif  将已压缩的或者没有必要压缩的文件去掉
+6> #zip -t 102003 file.zip   将当前目录下在2002年10月20号之后的文件压缩
+7> #zip -y file.zip *     不压缩链接文件的源文件
+8> #zip -9 file.zip *      压缩率问题  -1--9  -9 的压缩率最高
+9> #zip file.zip * -x file2.txt    在压缩时，将当前目录下的file.txt 文件排除在外
+
+
+1> #unzip file.zip   

@@ -12,6 +12,29 @@
  #chsh  -s /bin/csh   更换shell类型为 csh
  
  #history  | more  查看命令历史记录 分页显示
- #history 5 查看最近5条命令
+ #history 5 查看最   近5条命令
  #!5     执行编号为5的历史命令
  #!ls    执行最后一次ls历史命令
+ 
+ 
+ mysql备份脚本
+ 
+ #!/bin/sh
+ /home/mysql/bin/mysqldump -u root -p spdb1 > /home/spdb1.bak
+ 
+ 
+ 通配符
+ 
+ *  多个字母和数字
+ ？  一个字母和数字
+ ls a*     ls a?   ls ?at?   ls  -l abc[1-6].tif
+ 
+ 转义字符   \   代表空格
+ 任何变量和命令
+ echo "welcom $NAME,the date is ‘date’"
+ 
+ 
+ alias 命令使用
+  ls -la /home  给这个命令取个别名 llh
+  alias llh='ls -la /home'   
+ 
