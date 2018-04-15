@@ -1,0 +1,22 @@
+查询安装的rpm软件包
+#rpm -qa
+#rpm  -q mysql    查询是否安装mysql rpm 软件包
+#rpm -qi mysql    查询rpm软件包信息
+#rmp -i rpm包所在路径    安装rpm包到当前系统
+#rpm -ivh   rpm包所在路径  安装rpm包到当前系统，有提示
+#rpm -e mysql      rpm 卸载软件
+#rpm -e --nodeps mysql    强制卸载，容易破坏依赖关系
+#cp sam* /app  copy以sam开头的文件到 /app目录
+
+
+  
+  i 代表  install
+  v  代表  verbose(提示)
+  h  代表 hash (进度)
+
+
+
+#yum install nginx      yum 安装软件
+#yum -y install nginx    yum 安装软件 无提示
+#yum remove nginx       yum卸载软件 
+#apt-get install nginx   utuntu apt-get安装软件

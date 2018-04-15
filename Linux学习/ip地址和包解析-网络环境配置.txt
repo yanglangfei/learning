@@ -1,0 +1,19 @@
+1 追踪路由
+tracert  目标ip或者域名
+2  测试两个ip是否畅通
+ping ip或者域名    
+3  在windows下查看ip
+ipconfig
+4  在linux下查看ip
+ifconfig
+5 对 192.168 网段所有ip发广播
+netsend "不要玩cs"  192.168.255.255
+
+#ifconfig eth0 192.168.88.88   配置固定ip(临时生效)
+#ifconfig eth0 network x.x.x.x  配置子网掩码
+
+在linux中所有的设备 都是文件
+网络配置文件 可以修改配置文件
+/etc/sysconfig/network-scripts/ifcfg-eth
+  
+  
