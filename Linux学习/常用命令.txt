@@ -25,3 +25,9 @@ tab 补全命令    tab  双击，列出补全命令
 #man nginx   man帮助手册 相当于-help
 #find /app -name jar     搜索命令【在/app目录下搜索名称为jar的文件和文件夹】
 #whereis nginx     显示所有包含nginx文件的目录
+
+重定向命令
+>  把结果输出到某个文件
+#ls -l > kkk.java    如果没有kkk.java 就创建，有就覆盖
+>>  把结果追加到某个文件，不覆盖
+ 
