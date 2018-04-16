@@ -30,4 +30,414 @@ tab 补全命令    tab  双击，列出补全命令
 >  把结果输出到某个文件
 #ls -l > kkk.java    如果没有kkk.java 就创建，有就覆盖
 >>  把结果追加到某个文件，不覆盖
+
+
+
+
+
+
+- 用户组的管理  
+- 磁盘管理
+- 文件目录的打包及压缩   
+- 软件安装   
+- yum安装 lamp
+
+下载 方式 
+
+curl  -O    
+
+wget  -c  
+
+http://mirrors.hust.edu.cn/apache/httpd/         http://nodejs.cn/download/
+
+别名
+
+    vim /root/.bashrc  
+    alias l='ls -al'   # l等号之间没有空格  后边是单引号
+    
+    保存退出       
+    
+    source /root/.bashrc   # 让配置 立即生效  
+    
+    
+    #临时别名  
+    
+    alias m='mkdir -p'
+
+更改目录及文件所属的用户 和组
+
+    chown   
+         -R #递归修改子目录及文件         
+    chown -R yinshan:yinshan /test   
+
+查看文件内容的方式
+
+    cat 文件名    #将文件内容全部显示  需要滚动条查看   
+    more 文件名  #空格 分页   回车键   换行   q键退出    
+    head -n 10 文件名 #显示文件前10行内容 
+    tail -n 10 文件名 #显示文件后10行内容  
+    tail -f 文件名 #动态显示文件后面的内容   
+    watch -n 1  index.php    #每秒刷新一次内容  
+    |  管道符    #上一个的输出 作为下一个的输入  cat /etc/passwd 显示所有的内容| grep yinshan 
+    从所有的内容中 匹配yinshan         
+    history  #显示历史命令  
+    !52  #自动执行历史命令第52条命令 
+
+Linux用户管理
+
+    添加用户  useradd  用户名
+    
+         
+    删除用户 userdel 用户名  此时只是删除 /etc/passwd  一条记录 home 目录下 用户名为命名的目录还在 
+    userdel  -r 用户名   删除 /etc/passwd 记录的同时 删除 home 目录下  用户名为命名的目录  
+    
+    修改密码  passwd  用户名  不写用户名 默认 root   
+    
+    切换 用户   su 用户名  不写  默认切换到root  
+    
+    修改用户名  usermod  -l 新用户名   原来的用户名  
+    
+    
+    添加完用户  会在  /home 目录下 生成一个  以 用户名为命名的 目录    
+    
+    还会在  /etc/passwd 下面 产生一条记录    
+    
+    
+    
+    
+    root:x:0:0:root:/root:/bin/bash
+    bin:x:1:1:bin:/bin:/sbin/nologin
+    daemon:x:2:2:daemon:/sbin:/sbin/nologin
+    sync:x:5:0:sync:/sbin:/bin/sync
+    shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+    halt:x:7:0:halt:/sbin:/sbin/halt
+    mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+    yinshanshan:x:500:501::/home/yinshanshan:/bin/bash
+    
+    
+    第一部分: yinshanshan 用户名
+    第二部分:x 用户的密码   
+    第三部分:用户的id  
+    第四部分:组id  
+    第五部分: 空白  注释  
+    第六部分: /home/yinshanshan 表示用户的家目录  
+    第七部分: /bin/bash  用户具备脚本执行的权限    简单说 这个用户可以登录 /sbin/nologin 用户不具备脚本执行的权限   也就是 用户不可以登录     
+    
+    
+    添加一个用户  不让他 登录   
+    useradd test -s /sbin/nologin  
+
+
+
+
+
+用户组管理
+
+    groupadd 组名  #添加用户组    
+    #会在  /etc/group下面生成一条记录    
+    wenhai:x:503:    
+    #组名   组密码  组id 
+    groupdel 组名 # 删除组     
+    groupmod -n 新组名  原来的组名   #修改组名
+    
+    
+    
+    usermod  -g  用户组   用户名  #将用户从原来的组  加入到新的组 
+    useradd -g 用户组  用户名    #添加用户 直接把他加入到指定的组里   
+    
+    
+    gpasswd  -a 用户名  组名    #将用户加入到临时的组中  主组保持不变   
+    gpasswd  -d 用户名  组名    #将用户从临时组中删除      
+
+
+
+用户用户组密码配置文件
+
+    /etc/passwd 
+    /etc/group 
+    /etc/shadow 
+
+
+
+磁盘管理
+
+    sd卡 storage  disk     
+    HD Hard Disk  
+
+- df
+- du
+- fdisk  
+
+df  列出整体磁盘的使用量
+
+    df  默认以 kb为单位 
+        -a  列出所有文件系统 
+        -h 以最佳阅读体验查看  
+        -m 以MB为单位 
+        -k 以KB为单位
+
+du 查看文件及目录  对磁盘的占用情况
+
+    du   默认 以KB 为单位  
+        -a  列出所有文件系统 
+        -h 以最佳阅读体验查看  
+        -m 以MB为单位 
+        -k 以KB为单位
+
+
+
+
+
+fdisk  就是一个分区工具   好比windows中的   diskmgmt.msc
+
+    fdisk -l 列出所有的分区      硬盘 先分区再格式化  然后挂载 才能真正的使用 也就是 df -h 能看到这个分区才能真正被使用 
+    
+    
+    1.fdisk /dev/sdb   #这里是在虚拟机上再次分盘得到的
+    m 获取帮助
+    n 新建一个分区   
+    d 删除一个分区 
+    w 保存更改 退出   
+    q 不保存退出 
+    p 打印分区表 
+    
+    
+    n     
+    	extend  扩展分区
+    	primary 主分区 
+    	
+    p  
+    	选择分区号   会有提示  
+    	选择磁道   也会有提示   
+    +10G 
+    
+    w  保存   
+    
+    
+    fdisk -l  会发现一个 /dev/sdb1     
+    
+    
+    2.对新建好的分区 格式化   
+    
+    
+    文件系统类型   
+    	windows  NTFS  
+    	Linux ext4  
+    
+    mke2fs -t ext4 /dev/sdb1   
+    
+    
+    3. 挂载  
+    	mkdir -p /home/guazai  
+        
+        mount -t ext4 /dev/sdb1 /home/guazai       
+        
+        df -h 查看一下  发现有了  /dev/sdb1    
+        
+        如果提示  被占用  这时候  退出guazai这个目录 回到 home 目录下    
+        
+        umount /home/guazai   #取消挂载   
+        
+         以上是 临时的挂载    关机重启肯定丢失  
+         
+     4.永久的挂载    
+        vim /etc/fstab
+    	/dev/sdb1               /home/guazai            ext4    defaults        0 0
+        新分区				     挂载的位置  			 文件系统类型   默认挂载参数    
+        0  表示 是否开启 dump 备份       mysqldump 0表示 不开启 1表示开启 
+        0  表示 是否开机检查磁盘 	0 不检查  1 表示检查次磁盘   
+        
+        mount -a  表示让挂载立即生效  
+        umount /home/guazai  取消挂载   
+
+
+
+查看内存
+
+    free   
+         -h 以最佳阅读体验阅读   
+         swap  交换分区        
+
+
+
+压缩 解压缩
+
+zip rar 7zip cab iso    windows 压缩类型
+
+
+
+zip gz bz2 xz  Linux 压缩类型 
+
+
+
+gz  是gzip 的简称
+
+    yum -y install  gzip 
+    gzip -h  #查看帮助
+    gzip 文件1 文件2 文件3 #可以批量压缩   源文件不存在了  生成.gz的压缩文件     
+    -f 强制压缩 
+    gzip 不能压缩目录   
+    gzip -d 1.php.gz 2.php.gz  #支持批量解压缩   
+    
+
+bz2    bzip2 的简称
+
+    bzip2 -z 1.php 2.php 3.php# 可以批量压缩   源文件不存在了  生成.bz2的压缩文件
+    bzip2 -h #查看帮助    
+    bzip2 -d 1.php.bz2 2.php.bz2 3.php.bz2       #支持批量解压缩   
+    
+    不支持压缩目录   
+
+
+
+
+
+xz
+
+    xz -h #查看帮助  
+    xz -z  文件1 文件2 文件3 文件4  支持批量压缩   #源文件也不存在  生成.xz的压缩文件  也不支持压缩目录 
+    xz -d 1.php.xz 2.php.xz  
+
+
+
+打包 解包
+
+    tar 
+       -c 打包   
+       -x 解包
+       -f 制定文件名  
+       -t 列出归档内容 
+       -v 可视化输出   
+       
+    tar -cvf kangbazi.tar  1.php 2.php 3.php test #可以打包目录  也可以打包文件   源文件还在    
+    
+    tar -xvf kangbazi.tar  #解包  
+    
+    tar -tf kangbazi.tar  #查看包里的内容   
+
+
+
+gz的打包并压缩
+
+    tar 
+    	-z
+     tar -zcvf kangbazi.tar.gz 4.php 5.php 6.php haha   打包并压缩   生成一个  kangbazi.tar.gz  源文件还存在 
+
+
+
+gz的解包并解压缩
+
+
+
+    tar 
+    	-z
+    	tar -zxvf kangbazi.tar.gz   #源文件还在  
+
+ 
+
+bz2的 打包并压缩
+
+
+
+    tar 
+    	-j
+    	 tar -jcvf kangbazi.tar.bz2 4.php 5.php 6.php haha   打包并压缩   生成一个  kangbazi.tar.bz2  源文件还存在 
+
+
+
+bz2的解包并解压缩
+
+
+
+    tar 
+    	-j
+    	tar -jxvf kangbazi.tar.bz2   #源文件还在  
+
+
+
+xz的 打包并压缩
+
+    tar 
+    	-J
+    	tar -Jcvf test2.tar.xz 4.php 5.php 6.php haha  打包并压缩   生成一个  test2.tar.xz  源文件还存在 
+
+
+
+xz的解包并解压缩
+
+    tar 
+        -J  
+        tar -Jxvf test2.tar.xz 
+
+ 
+
+wget 递归扒站
+
+    -c  断点续传   
+    -r,  指定递归下载。
+    -k  将页面中的连接转化为相对连接也就是本地链接   
+    -p, 下载所有用于显示 HTML 页面的图片之类的元素。
+    -np, 不追溯至父目录。
+    -nc, 不要重复下载已存在的文件
+
+
+
+软件安装
+
+    1.rpm 安装  
+    2.yum 安装  
+    3.源码编译安装   
+
+rpm安装 redhat package management  .rpm
+
+优点: 只需要下载 rpm包即可
+
+缺点:  有依赖关系     安装 2 软件 必须安装 1
+
+    rpm -qa 列出所有已经安装的rpm包  
+    
+    i386 i586 i686 32位 
+    x86_64 64位
+    
+    rpm -qa | grep vim  
+    vim-minimal-7.4.629-5.el6.x86_64   4 
+    vim-enhanced-7.4.629-5.el6_8.1.x86_64  2 
+    vim-common-7.4.629-5.el6_8.1.x86_64   3
+    vim-filesystem-7.4.629-5.el6_8.1.x86_64  1   
+    
+    http://rpm.pbone.net/index.php3/stat/4/idpl/30823637/dir/scientific_linux_6/com/vim-filesystem-7.4.629-5.el6.x86_64.rpm.html
+    rpm -i 安装  
+        -v 视图显示
+        -h 显示安装进度 
+        
+        
+    rpm -ivh ftp://ftp.pbone.net/mirror/ftp.scientificlinux.org/linux/scientific/6.8/x86_64/os/Packages/vim-filesystem-7.4.629-5.el6.x86_64.rpm    #安装  
+    rpm -e 卸载   
+    rpm -U 包名 更新rpm 包  
+    rpm -ql tree  查询tree 安装在哪里
+    rpm -qi tree 查询tree 安装包的信息   
+    rpm -qa | wc -l #列出一共安装有多少个rpm包 
+
+
+
+yum 安装
+
+好比手机 应用商店   App Store   360 软件管家    管理软件   
+
+自动安装   如果rpm 有依赖关系  自动的下载以来的软件     自动解决依赖关系  
+
+vim 需要安装四个rpm 包   yum自动下载所有相关的  
+
+    yum install  会有提示  
+    yum -y install 不提示  
+    yum -y groupinstall   组安装  
+    yum -y remove 软件名   移除软件   
+    yum -y update 软件名 更新软件  
+    yum -y search 软件包名  查询软件包的信息   
+    yum -y install  vim
+    
+    yum -y install tree --downloadonly --downloaddir=/tmp   只下载 不安装  制定安装的目录    
+
+
+
  
