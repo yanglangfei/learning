@@ -3,8 +3,13 @@
 /etc/.bashrc   指定程序自启动  
 
 配置 用户主目录下的 .bashrc 文件可以指定某些程序在用户登陆时启动
-
 将 startup.sh 路径追加到 /home/yanglf/.bashrc 内容后边 
+
+配置 用户主目录下的 .bash_profile 文件可以指定某些程序在任何目录下都可以运行
+
+将  /usr/backup 路径 添加到 PATH=$PATH:$HOME/bin:/usr/backup   那么 /usr/backup 下的sh文件在任何目录下都可以执行
+
+
 
 当想临时加入一个路径时，可以使用 export
 

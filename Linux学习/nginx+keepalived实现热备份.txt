@@ -1,0 +1,53 @@
+1、 安装nginx 所需依赖
+# yum install gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl openssl-devel 
+
+2、下载nginx
+# cd /usr/local/src/  
+# wget http://nginx.org/download/nginx-1.13.0.tar.gz 
+也可以直接使用yum 下载
+yum search nginx
+yum -y install nginx
+直接输入 nginx 启动
+
+
+3、编译、安装nginx
+# cd /usr/local/src/  
+# tar -zxvf nginx-1.13.0.tar.gz  
+# cd nginx-1.13.0  
+# ./configure --prefix=/usr/local/nginx  
+# make && make install  
+
+4、配置nginx
+# vim /usr/local/nginx/conf/nginx.conf  
+
+5、开放80端口 重启防火墙
+# vim /etc/sysconfig/iptables  
+## Nginx  
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 88 -j ACCEPT  
+# service iptables restart 
+
+6、测试nginx配置是否成功
+
+# /usr/local/nginx/sbin/nginx -t  
+
+
+7、启动nginx
+
+# /usr/local/nginx/sbin/nginx 
+
+8、设置开机自启
+# vim /etc/rc.local 
+/usr/local/nginx/sbin/nginx  
+
+9、下载 Keepalived
+#wget http://www.keepalived.org/software/keepalived-1.4.3.tar.gz
+
+# yum install keepalived -y
+
+
+10、查看版本
+# keepalived -v
+
+
+
+
