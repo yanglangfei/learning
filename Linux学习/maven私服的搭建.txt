@@ -1,0 +1,253 @@
+maven私服的搭建
+
+
+jdk 安装
+
+1、查看已经安装的jdk
+[root@bogon jre]# rpm -qa|grep jdk
+
+2、卸载jdk
+yum -y remove java-1.8.0-openjdk-headless-1.8.0.65-3.b17.el7.x86_64
+
+3、查看jdk是否卸载
+[root@bogon lib]# java -version
+bash: java: command not found...
+
+4、下载jdk
+
+去官网下载jdk：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html 
+解压到安装目录
+[root@bogon software]# tar -zxvf jdk-8u101-linux-x64.tar.gz -C /usr/local/java/
+
+5、配置环境变量
+在/etc/profile文件末尾添加
+
+[root@bogon software]# vim /etc/profile
+export JAVA_HOME=/usr/local/java/jdk1.8.0_101
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+
+使/etc/profile生效
+[root@bogon jdk1.8.0_101]# source /etc/profile
+
+
+6、下载Nexus
+Nexus官网下载地址：http://www.sonatype.org/nexus/go/
+使用wget命令下载 wget 想要下载nexus版本的地址
+
+[root@localhost nexus]# wget 
+https://sonatype-download.global.ssl.fastly.net/nexus/oss/nexus-2.11.2-03-bundle.tar.gz
+
+
+7、解压到指定目录
+[root@localhost nexus]# mkdir /usr/local/nexus
+[root@localhost nexus]# tar -zxvf nexus-2.11.2-03-bundle.tar.gz  -C /usr/local/nexus/
+[root@localhost nexus]# cd /usr/local/nexus
+[root@localhost nexus]# ls
+nexus-2.11.2-03 sonatype-work
+(一个 nexus 服务，一个私有库目录)
+
+8、编辑 Nexus 的 nexus.properties 文件,配置端口和 work 目录信息
+[root@localhost nexus]# cd nexus-2.11.2-03
+[root@localhost nexus-2.11.2-03]# ls
+bin conf lib LICENSE.txt logs nexus NOTICE.txt tmp
+查看目录结构，jetty 运行
+[root@localhost nexus-2.11.2-03]# cd conf
+[root@localhost conf]# vi nexus.properties
+
+# Jetty section
+application-port=8081
+application-host=0.0.0.0
+nexus-webapp=${bundleBasedir}/nexus
+nexus-webapp-context-path=/nexus
+# Nexus section
+nexus-work=${bundleBasedir}/../sonatype-work/nexus
+runtime=${bundleBasedir}/nexus/WEB-INF
+
+
+9、编辑 nexus 脚本, 配置 RUN_AS_USER 参数
+
+[root@localhost conf]# vi /usr/local/nexus/nexus-2.11.2-03/bin/nexus
+
+NEXUS_HOME=".."
+改为（不修改默认也可以）：
+NEXUS_HOME="nexus安装目录"
+
+#RUN_AS_USER=
+改为：
+RUN_AS_USER=root
+
+10、第五步：防火墙中打开 8081 端口 
+[root@localhost conf]# vi /etc/sysconfig/iptables
+添加：
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 8081 -j ACCEPT
+重启防火墙
+[root@localhost conf]# service iptables restart
+
+
+
+11、修改 NEXUS_HOME/bin/jsw/conf 下wrapper.conf 文件设置jvm运行环境
+
+wrapper.java.command=/usr/local/java/jdk1.7.0_67/bin/java
+
+
+11、第六步：启动 nexus [nexus的bin目录下的可以执行文件可以进入bin查看]
+[root@localhost conf]# /usr/nexus/nexus-2.11.2-03/bin/nexus start
+****************************************
+WARNING - NOT RECOMMENDED TO RUN AS ROOT
+****************************************
+Starting Nexus OSS...
+Started Nexus OSS.
+
+
+12、访问测试
+浏览器输入地址 http://192.168.174.128:8081/nexus
+登录，默认用户名 admin 默认密码 admin123
+
+Nexus上预定义了三个用户，用admin登录后，单击页面左边的User链接
+
+admin：该用户拥有Nexus的全部权限，默认密码为admin123。
+deployment：该用户能够访问Nexus，浏览仓库内容、搜索、上传部署构件，
+但是不能对Nexus进行任何配置，默认密码为deployment123。
+anonymous：该用户对应了所有未登录的匿名用户，它们可以浏览仓库并进行搜索。
+
+添加第三方jar默认情况下Nexus为我们创建了以下主要的Repository
+
+1、Public Repositories，这是一个Repository Group，该Repository  Group包含了多个Repository，
+其中包含了Releases、Snapshots、ThirdParty和Central。
+2、3rd party，该Repository即是存放你公司所购买的第三方软件库的地方，
+它是一个由Nexus自己维护的一个Repository。 
+3、Apache Snapshots，看名字你就应该知道这是个什么样的Repository，
+这是一个代理Repository，即最终的依赖还是得在Apache官网上去下载，然后缓存在Nexus中。
+4、Central，这就是代理Maven Central Repository的Repository。
+5、Releases，你自己的项目要发布时，就应该发布在这个Repository，
+他也是Nexus自己维护的Repository，而不是代理。
+6、Snapshots，你自己项目Snapshot的Repository。
+
+
+使用3rd party上传第三方jar包
+
+在Repository列表中，选中 3rd party，选中artifact upload，
+
+选择GAV Defini3ion: GAV Parameters，Auto Guess 打钩。
+
+在下方输入JAR包对应的Group、Artifact、Version，Packaging选择JAR格式。
+
+点击select Artifact(s) to upload 按钮，选择要上传的JAR包。
+
+
+
+进入名为 Central 的资源库，在其配置页面，将远程下载索引调整为 true
+Download Remote Indexes  true
+
+
+
+打开nexus安装目录下的nexus\sonatype-work\nexus\indexer文件夹，
+可看到各仓库对应存放索引的文件夹。Central-ctx为中央仓库
+解压下载好的nexus-maven-repository-index.zip文件（打包好的所有索引文件），
+将其中的文件解压到central-ctx下，拷贝之前清空central-ctx文件夹。
+
+Jar等文件包目录： /sonatype-work/nexus/storage
+
+
+
+配置 Maven
+用文本编辑器（不要用记事本 notepad）打开 %M2_HOME%\conf\settings.xml 文件，
+其中 %M2_HOME% 表示本地 Maven 安装目录。
+在 settings 节点下设置本地仓库：
+<localRepository>E:/work/repo/</localRepository>
+
+在 settings - profiles 节点下设置私服地址：
+<profile>
+  <id>nexus</id>
+  <repositories>
+    <repository>
+      <id>public</id>
+      <name>Local Public Repository</name>
+      <url>http://localhost:8081/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>public</id>
+      <name>Local Public Repository</name>
+      <url>http://localhost:8081/nexus/content/groups/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+</profile>
+
+
+在 settings 节点下激活私服地址：
+<activeProfiles>
+  <activeProfile>nexus</activeProfile>
+</activeProfiles>
+
+
+
+
+
+项目使用nexus私服的jar包，在项目的pom.xml文件中指定私服仓库
+
+<repositories>
+    <repository>
+        <id>nexus</id>
+        <name>nexus</name>
+        <url>http://192.168.1.103:8081/nexus/content/groups/public/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+项目使用nexus私服的插件，在项目的pom.xml文件中指定插件仓库
+<pluginRepositories>
+    <pluginRepository>
+        <id>nexus</id>
+        <name>nexus</name>
+        <url>http://192.168.1.103:8081/nexus/content/groups/public/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </pluginRepository>
+</pluginRepositories>
+项目发布到私服，maven项目使用命令：mvn clean deploy；需要在pom文件中配置一下代码
+<distributionManagement>
+        <repository>
+            <id>user-release</id>
+            <name>User Project Release</name>
+            <url>http://192.168.1.103:8081/nexus/content/repositories/releases/</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>user-snapshots</id>
+            <name>User Project SNAPSHOTS</name>
+            <url>http://192.168.1.103:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+注意还需要配置mvn发布的权限，否则会报401错误，在settings.xml中配置权限，其中id要与pom文件中的id一致
+<server>
+    <id>user-release</id>
+    <username>admin</username>
+    <password>admin123</password>
+</server>
+<server>
+    <id>user-snapshots</id>
+    <username>admin</username>
+    <password>admin123</password>
+</server>
+
+
+
