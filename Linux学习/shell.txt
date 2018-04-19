@@ -5,6 +5,12 @@
  #fdisk -l  查看分区具体使用情况
  
  
+ echo hello world  直接输出字符串
+ echo 'hello world'  直接输出字符串
+ echo "this is ${class}_name" 字符串拼接 必须加{} 双引号可以解析转义符 变量
+ echo "time is `date +%Y%m%d%H%M%S`"   `` tab键上方反引号可以解析命令
+ 
+ 
  《linux命令/编辑器和shell编程》
  
 

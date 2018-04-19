@@ -436,8 +436,29 @@ vim 需要安装四个rpm 包   yum自动下载所有相关的
     yum -y search 软件包名  查询软件包的信息   
     yum -y install  vim
     
-    yum -y install tree --downloadonly --downloaddir=/tmp   只下载 不安装  制定安装的目录    
+    yum -y install tree --downloadonly --downloaddir=/tmp   只下载 不安装  制定安装的目录 
 
+
+时间
+    linux时间有两个  系统时间 date 和 硬件时间  clock
+	
+date
+   %Y  年    %m  月    %d  日    %H  时    %m  分   %S  秒
+   date +%Y
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+file /app   文件内部类型
 
 
  

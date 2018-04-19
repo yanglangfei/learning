@@ -1,0 +1,144 @@
+https://blog.csdn.net/weixin_41476978/article/details/79978710
+linux 日志分类
+/var/log/messages    系统服务及日志，包括服务的信息，报错等等
+/var/log/secure         系统认证信息日志
+/var/log/maillog        系统邮件服务信息
+/var/log/cron             系统定时任务信息
+/var/log/boot.log       系统启动信息
+
+1、日志管理服务rsyslog
+rsyslog将内存中的日志采集到硬盘中保存
+日志采集规则：日志类型.日志级别   日志存放文件
+/etc/rsyslog.conf   ##主配置文件
+
+
+日志类型
+auth       用户登陆日志（pam产生的日志）
+authpriv   服务认证日志（sshd认证）
+kern       内核日志
+cron       定时任务日志
+lpr        打印机日志
+mail       邮件日志
+news       新闻
+user       用户相关程序日志
+日志级别
+debug      系统调试信息
+info       常规信息
+warning    警告信息
+err        报错（级别低，组织了某个功能不能正常工作）
+crit       报错（级别高，组合了整个软件或者系统不能正常工作）
+alert      需要立即修改的信息
+emerg      内核崩溃等严重信息
+
+将所有日志输出到log.all文件
+#vim /etc/rsyslog.conf
+*.*      /var/log/log.all
+#systemctl restart rsyslog.service
+#cat /var/log/log.all
+
+
+2、日志远程同步
+将所有的日志同步到一台主机
+1> 为了方便管理将发送方主机名设为node2 接收方为node1   修改hostname
+#hostnamectl set-hostname node1.example.com
+#hostname
+
+2>  配置
+在日志发送方
+#vim /etc/rsyslog.conf
+*.*    @日志接受方地址ip   发送日志
+*.*    @172.25.254.100 ##通过udp协议把日志发送到100主机，@udp，@@tcp
+
+在日志接收方
+#vim /etc/rsyslog.conf
+15 $ModLoad imudp
+16 $UDPServerRun 514
+取消这两行的注释 使node1成为可以接受日志的状态
+#systemctl restart rsyslog  ##重启采集服务
+#systemctl stop firewalld   ##关闭防火墙
+#systemctl disable firewalld
+#cat /var/log/message ##查看远程日志
+
+
+
+3、定义日志采集格式
+#vim /etc/rsyslog.conf
+$template 格式名称,"日志采集格式"   <xupt>
+$template xupt,"%timegenerated% %FROMHOST-IP% %syslogtag% %msg%\n"
+*.info;mail.none;authpriv.none;cron.none        /var/log/messages;xupt
+
+%timegenerated%   ##日志生成时间
+%FROMHOST-IP%     ##日志来源主机的IP
+%syslogtag%       ##日志生成程序
+%msg%             ##日志内容
+\n                ##换行
+
+
+4、日志分析工具journal
+#journalctl     ##日志查看，直接查看内存中的日志
+    -n  3    显示最新3条
+    -p err   显示报错日志
+    -f       监控日志用户ctrl+c结束监控
+	--since  --until   从什么时间到什么时间的日志
+#journalctl --since 07:20 --until 07:30
+    -o verbose ##显示日志能够使用的详细进程参数
+#journalctl _PID=651   ##查看id为651的进程的日志
+因为journalctl是直接查看内存中的日志，所以reboot 关机之后日志消失
+
+
+
+systemd-journal保存日志到硬盘中,防止开机丢失
+配置
+#mkdir /var/log/journal
+#chgrp systemd-journal  /var/log/journal
+#chmod  g+s /var/log.journal
+#killall -1 systemd-journald
+测试
+#journalctl -n 3
+#date
+#reboot
+#journalctl
+
+
+5、时间同步
+在服务器端开启时间共享
+#vim /etc/chrony.conf
+29 local stratum 10 ##开启时间共享功能并设定共享级别,这个参数开启后本机不同步别人的时间到本机
+22 allow 172.25.254.0/24  ##允许那些客户端来访问本机共享的时间
+#systemctl restart chronyd
+在客户端
+#vim /etc/chrony.conf 
+server 172.25.254.100 iburst
+#systemctl restart chronyd
+#chronyc sources -v
+出现*说明同步成功
+
+#timedatectl    ##显示当前时间信息
+#timedatectl set-time '2018-12-22 12:30:02' ##设定当前时间
+#timedatectl set-timezone 'Asia/Shanghai'   ##设定当前时区
+#timedatectl set-local-rtc 0|1 ##设定是否使用utc时间 0-否 1-是
+
+
+
+6、延迟命令
+at 时间
+at now+5min
+at 16：00
+at> touch /mnt/file{1..10}
+ctrl+d
+at> <EOT>
+at -l ##查看延迟的任务
+at -c 3 ##查看延迟任务的具体内容
+at -r 3  ##删除延迟任务
+
+#at now+3min
+at> echo 'hello'
+at> <EOT>
+ctrl+d 退出   3分钟后会执行 echo命令
+
+#watch -n 1 ls /mnt/      监控命令
+
+/etc/at.deny ##at命令的黑名单
+/etc/at.allow ##白名单
+当白名单建立黑名单失效 其他用户除了root用户都不能使用at
+
