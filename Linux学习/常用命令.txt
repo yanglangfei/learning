@@ -458,7 +458,240 @@ date
    
    
    
-file /app   文件内部类型
+#file /app   文件内部类型
+#which nginx 查找nginx的所在目录
+#rename   重命名文件
+#cd -   在当前目录和上次目录中间进行切换
+#cd ~   切换到当前用户的家目录
+#cd ~yanglf  切换到指定用户的家目录
+#head a.txt   显示a文件的头部信息
+#tail a.txt   显示a文件的尾部信息
+#wall 'hello'  向其他终端发消息
+
+
+#uname  显示操作系统相关信息
+#hostname 显示设置主机名
+#dmesg   显示开机信息 用于开机诊断
+#uptime   显示系统运行时间和负载
+#stat app  显示文件的状态
+#du    计算磁盘空间使用情况。 
+#df    报告文件系统磁盘空间的使用情况。 
+#top   实时显示系统资源使用情况。 
+#free   查看系统内存。 
+#date   显示与设置系统时间。 
+#cal   查看日历等时间信息。
+
+
+
+搜索文件
+
+#which  nginx    查找二进制命令，按环境变量 PATH 路径查找。 
+#find / -name nginx  从磁盘遍历查找文件或目录。 
+#whereis nginx   查找二进制命令，按环境变量 PATH 路径查找。 
+locate从数据库 (/var/lib/mlocate/mlocate.db) 查找命令，使用 updatedb 更新库。
+
+
+
+用户管理命令（10 个）
+useradd添加用户。 
+usermod修改系统已经存在的用户属性。 
+userdel删除用户。 
+groupadd添加用户组。 
+passwd修改用户密码。 
+chage修改用户密码有效期限。 
+id查看用户的 uid,gid 及归属的用户组。 
+su切换用户身份。 
+visudo编辑 / etc/sudoers 文件的专属命令。 
+sudo以另外一个用户身份（默认 root 用户）执行事先在 sudoers 文件允许的命令。
+
+
+
+基础网络操作命令（11 个）
+telnet使用 TELNET 协议远程登录。 
+ssh使用 SSH 加密协议远程登录。 
+scp全拼 secure copy，用于不同主机之间复制文件。 
+wget命令行下载文件。 
+ping测试主机之间网络的连通性。 
+route显示和设置 linux 系统的路由表。 
+ifconfig查看、配置、启用或禁用网络接口的命令。 
+ifup启动网卡。 
+ifdown关闭网卡。 
+netstat查看网络状态。 
+ss查看网络状态。
+
+
+
+深入网络操作命令（9 个）
+nmap网络扫描命令。 
+lsof全名 list open files，也就是列举系统中已经被打开的文件。 
+mail发送和接收邮件。 
+mutt邮件管理命令。 
+nslookup交互式查询互联网 DNS 服务器的命令。 
+dig查找 DNS 解析过程。 
+host查询 DNS 的命令。 
+traceroute追踪数据传输路由状况。 
+tcpdump命令行的抓包工具。
+
+
+
+有关磁盘与文件系统的命令（16 个）
+mount挂载文件系统。 
+umount卸载文件系统。 
+fsck检查并修复 Linux 文件系统。 
+dd转换或复制文件。 
+dumpe2fs导出 ext2/ext3/ext4 文件系统信息。 
+dump ext2/3/4 文件系统备份工具。 
+fdisk磁盘分区命令，适用于 2TB 以下磁盘分区。 
+parted磁盘分区命令，没有磁盘大小限制，常用于 2TB 以下磁盘分区。 
+mkfs格式化创建 Linux 文件系统。 
+partprobe更新内核的硬盘分区表信息。 
+e2fsck检查 ext2/ext3/ext4 类型文件系统。 
+mkswap创建 Linux 交换分区。 
+swapon启用交换分区。 
+swapoff关闭交换分区。 
+sync将内存缓冲区内的数据写入磁盘。 
+resize2fs调整 ext2/ext3/ext4 文件系统大小。
+
+
+
+系统权限及用户授权相关命令（4 个）
+chmod改变文件或目录权限。 
+chown改变文件或目录的属主和属组。 
+chgrp更改文件用户组。 
+umask显示或设置权限掩码。
+
+
+
+查看系统用户登陆信息的命令（7 个）
+whoami显示当前有效的用户名称，相当于执行 id -un 命令。 
+who显示目前登录系统的用户信息。 
+w显示已经登陆系统的用户列表，并显示用户正在执行的指令。 
+last显示登入系统的用户。 
+lastlog显示系统中所有用户最近一次登录信息。 
+users显示当前登录系统的所有用户的用户列表。 
+finger查找并显示用户信息。
+
+
+
+内置命令及其它（19 个）
+echo打印变量，或直接输出指定的字符串 
+printf将结果格式化输出到标准输出。 
+rpm管理 rpm 包的命令。 
+yum自动化简单化地管理 rpm 包的命令。 
+watch周期性的执行给定的命令，并将命令的输出以全屏方式显示。 
+alias设置系统别名。 
+unalias取消系统别名。 
+date查看或设置系统时间。 
+clear清除屏幕，简称清屏。 
+history查看命令执行的历史纪录。 
+eject弹出光驱。 
+time计算命令执行时间。 
+nc功能强大的网络工具。 
+xargs将标准输入转换成命令行参数。 
+exec调用并执行指令的命令。 
+export设置或者显示环境变量。 
+unset删除变量或函数。 
+type用于判断另外一个命令是否是内置命令。 
+bc命令行科学计算器
+
+
+
+系统管理与性能监视命令 (9 个)
+chkconfig管理 Linux 系统开机启动项。 
+vmstat虚拟内存统计。 
+mpstat显示各个可用 CPU 的状态统计。 
+iostat统计系统 IO。 
+sar全面地获取系统的 CPU、运行队列、磁盘 I/O、分页（交换区）、内存、 CPU 中断和网络等性能数据。 
+ipcs用于报告 Linux 中进程间通信设施的状态，显示的信息包括消息列表、共享内存和信号量的信息。 
+ipcrm用来删除一个或更多的消息队列、信号量集或者共享内存标识。 
+strace用于诊断、调试 Linux 用户空间跟踪器。我们用它来监控用户空间进程和内核的交互，比如系统调用、信号传递、进程状态变更等。 
+ltrace命令会跟踪进程的库函数调用, 它会显现出哪个库函数被调用。
+
+
+
+关机 / 重启 / 注销和查看系统信息的命令（6 个）
+shutdown关机。 
+halt关机。 
+poweroff关闭电源。 
+logout退出当前登录的 Shell。 
+exit退出当前登录的 Shell。 
+Ctrl+d退出当前登录的 Shell 的快捷键。
+
+
+
+进程管理相关命令（15 个）
+bg将一个在后台暂停的命令，变成继续执行 （在后台执行）。 
+fg将后台中的命令调至前台继续运行。 
+jobs查看当前有多少在后台运行的命令。 
+#kill  -9 87657       终止进程。 
+#killall  -9 nginx    通过进程名终止进程。 
+pkill通过进程名终止进程。 
+crontab定时任务命令。 
+ps显示进程的快照。 
+pstree树形显示进程。 
+nice/renice调整程序运行的优先级。 
+nohup忽略挂起信号运行指定的命令。 
+pgrep查找匹配条件的进程。 
+runlevel查看系统当前运行级别。 
+init切换运行级别。 
+service启动、停止、重新启动和关闭系统服务，还可以显示所有系统服务的当前状态
+#id  显示当前用户所有信息
+#id yanglf  显示指定用户信息
+#users   显示当前登录用户
+#who    显示当前正在系统中的所有用户名字，使用终端设备号，注册时间。
+#whoami   显示当前有效的用户名称，相当于执行
+wc [option] filename   统计文件中的文件行数、字数和字符数。 
+   -l 统计文件的行数 
+   -w 统计文件的单词数 
+   -c 统计文件的字符数 
+#mailx  查看自己的电子邮件
+    delete  删除 
+    next    下一个 
+    quit    退出 
+    reply   回复
+#history  回忆命令
+#bc（计算器）scale=num 设置保留小数点位数
+
+查看root所属组：#groups root
+
+
+添加用户：useradd tom(其它使用默认值，使用useradd –D查看，在/etc/default/useradd下更改)    
+ (-c “ xxxx”  加注释；-s /sbin/nologin 加shell；-d  /home/tom 指定家目录；-g tom 指定组；-u 指定UID)
+更改用户属性：usermod –c ‘yyyy’ (参数与useradd相同)
+添加密码：passwd tom(用户)   passwd –S tom(查看密码)  passwd –d tom(清除gc密码)
+删除用户：userdel tom(用户)  userdel –r tom(删除用户及其家目录等)
+改变用户账号及密码信息：chage(参考帮组手册)
+
+
+切换用户：su tom(用户)  su – tom(切换用户，并切换到tom家目录)  su - -c ‘ifconfig’(以root身份执行命令)
+给相应用户赋予相应命令权限(/etc/sudoers)：修改文件时用:visudo(tom entos(主机名)=bin/ifconfig,…(授权的命令)) 
+  修改后：sudo 命令 
+查看授权命令：sudo  -l
+
+
+#alias -p  列举系统中的所有别名 
+#alias -p | grep 'up'    列举系统中所有包含 up的别名
+
+然而，上面这些我们创建的别名只能暂时的工作，当经过下一次系统启动后它们不再工作。
+你可以像下面展示的这样在 '.bashrc' 文件中设置永久别名。
+添加以后，运行下面的命令来激活：
+$ source ~/.bashrc
+
+
+#type  ls    type 命令来列出所有的 shell 关键字
+
+
+
+启动、关闭防火墙
+永久打开或则关闭 
+chkconfig iptables on 
+chkconfig iptables off 
+即时生效：重启后还原 
+service iptables start 
+service iptables stop 
+     或者： 
+/etc/init.d/iptables start 
+/etc/init.d/iptables stop 
 
 
  

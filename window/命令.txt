@@ -1,1 +1,0 @@
-tracert www.baidu.com    查看访问百度经过的路由

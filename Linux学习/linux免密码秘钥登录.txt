@@ -1,0 +1,58 @@
+https://blog.csdn.net/qjc_501165091/article/details/51278696
+https://www.linuxidc.com/Linux/2016-06/132268.htm
+
+使用xshell秘钥登录
+ssh登录提供两种认证方式：口令(密码)认证方式和密钥认证方式。
+1、生成密钥（公钥与私钥）
+打开Xshell，点击 工具->新建用户秘钥生成向导
+秘钥类型选择RSA，秘钥长度2048位，下一步
+提示你正在生成公钥和私钥对，下一步
+给私钥命名和设置密码，下一步
+这个就是生成的公钥，保存起来，待会要用，点击完成。
+
+2、上传公钥(Public Key)到服务器~/.ssh/authorized_key文件中
+使用到Xshell登录到服务器，进入到“/root/.ssh/”目录，运行rz命令(如果没有rz命令，运行yum install lrzsz安装)，
+将key.pub发送到服务器，然后运行如下命令，将公钥(Public Key)导入到“authorized_keys”文件
+[root@localhost ~]# cd /root/.ssh/
+[root@localhost .ssh]# rz
+rz waiting to receive.
+[root@localhost .ssh]# cat me.pub >> authorized_keys
+[root@localhost .ssh]# chmod 600 authorized_keys
+[root@localhost .ssh]# ls
+authorized_keys known_hosts me.pub
+[root@localhost .ssh]# cat authorized_keys
+
+
+3、配置ssh客户端使用密钥登录
+#vim /etc/ssh/sshd_config
+
+把下面两句前面的#号去掉
+PubkeyAuthentication yes   # 是否秘钥认证
+AuthorizedKeysFile  .ssh/authorized_keys   #秘钥文件
+
+
+把yes改成no
+PasswordAuthenticationno   no   #是否允许密码登录
+
+
+如果你想禁止root远程登录，就把#PermitRootLogin yes这句去掉#号改成no即可
+
+
+最后保存并退出。
+#service sshd restart   #重启sshd服务
+
+
+点击左侧的“Authentication”,切换到认证栏目，在“Method”选择“Public Key”认证，
+用户名输入“root”(公钥是放在root目录下的.ssh文件夹中)，
+在“User Key”中选择我们刚才生成的私钥“key”,“Passphrase”中输入私钥的加密密码。
+
+
+
+
+其实，linux下的ssh-keygen下也可以生成密钥，在linux下输入ssh-keygen -t rsa，
+在提示下，输入密钥的名称(这里为key)和私钥加密密码,既完成密钥生成。
+生成的两个文件中，“key”为私钥，“key.pub”为公钥。
+
+
+
+秘钥丢失登录不了 去阿里云客户端终端修改配置文件  重新配置

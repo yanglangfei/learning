@@ -1,0 +1,8 @@
+xshell
+https://xshell.en.softonic.com/
+
+finalftp
+
+
+putty
+https://www.chiark.greenend.org.uk/~sgtatham/putty/
