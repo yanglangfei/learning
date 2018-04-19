@@ -47,6 +47,10 @@ sudo gitlab-ctl restart
 需要 linux开放 8081端口
 http://10.200.80.255:8081
 用户名: root　　
-密码: 5iveL!fe　
+密码: 5iveL!fe
+
+
+
+https://blog.csdn.net/m0_37606574/article/details/79951478　
 
 
