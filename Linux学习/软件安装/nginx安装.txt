@@ -1,3 +1,5 @@
+﻿http://www.souvc.com/?p=1661
+https://blog.csdn.net/w410589502/article/details/70787468
 1、安装依赖库
 yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel
 
