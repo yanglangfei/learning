@@ -11,6 +11,170 @@
  echo "time is `date +%Y%m%d%H%M%S`"   `` tab键上方反引号可以解析命令
  
  
+ # date -d '7 day ago' '+%Y%m%d%H%M'  7天前的时间
+ 显示当前时间
+ # date -s "2017-11-18 17:03:30"
+ # date "+%Y%m%d"
+ 
+ 
+ 
+ 变量对大小敏感
+ 等号两边不能有空格
+ 定义好之后用（$变量名）调用变量
+ name=$1    将第一个变量赋给name
+ echo $name
+ 
+ 
+ 预定义变量
+ $0 显示脚本名称 
+ $! 进程中的PID号，每一个进程都有一个编号 
+ $$ 当前进程的id号
+ $# 当前传入shell的参数个数
+ $* 整体打印参数
+ $@ 逐个显示参数内容
+ $？判断表示程序退出的代码 （返回0表示成功，非0表示失败） 
+ 
+ 
+ shell 计算
+ # echo $((a+b))
+ # echo $[a+b]
+ # echo $(($a+$b))
+ # echo $[$a+$b]  echo $[a+b]不加$也可以执行
+ # expr  $a + $b 注意：加号前后要加空格
+ 
+ 
+ 
+ 
+内置判断
+ 数字判断
+ -eq 等于则为真           
+ -ne 不等于则为真             
+ -gt 大于则为真               
+ -ge 大于等于则为真           
+ -lt 小于则为真               
+ -le 小于等于则为真  
+
+
+字符串判断：
+ =：字符串内容相同则为真，就是说包含的文本一摸一样。
+ !=：字符串内容不同，则为真（!号表示相反的意思）
+ -z：字符串内容为空（长度为零）则为真 
+ 
+ 文件判断
+ -e 文件名 ： 如果文件名存在即为真
+ -r 文件名 ： 如果文件名存在且可读则为真
+ -w 文件名 ： 如果文件名存在且可写则为真
+ -x 文件名 :  如果文件名存在且可执行则为真
+ ! : 非
+ -a : and 
+ -o : or
+ [ -e  /etc/passwd -a 2 -eq 2 ];echo $?
+ [ -e /etc/passwd ];echo $?
+ 
+ 
+ 
+for循环
+ 第一种写法： 
+ for MONTH in {1..12}  //或者这里也可以写$(seq 1 12)
+	do
+	 mkdir -p /opt/test/$MONTH
+	done
+ 第二种写法：
+ for((i=1;i<=10;i++))
+	 do
+	  SUM=$((SUM+i))
+	 done
+	  echo $SUM
+	  
+ 第三种写法：
+使用延迟(有趣的进度条)：
+  #!/bin/bash
+	 b=''
+  for ((i=0;$i<=100;i++))
+	 do 
+	   printf "Progress:[%-100s]%d%%\r" $b $i
+		sleep 0.1
+		b=#$b 
+	 done 
+	  echo
+	  
+	  
+if条件
+  第一种写法:
+    if [ 3 -eq 3 ]
+	  then
+		echo Yes
+	  fi
+  第二种写法：
+	if [ -d /home/jerry/tmp ]
+	  then
+		ls /home/jerry/tmp
+	  else
+		mkdir /home/jerry/tmp
+		echo "目录创建成功"
+	  fi
+	  
+   第三种写法:
+	# read socre  and choose level
+	# read 相当于Java中的scanner 是一种交互式命令，读取设备的输入
+	echo "请输入学生成绩score:"
+	read score
+	  if test $score -ge 90;
+		then
+		  echo level A;
+	  elif [ $score -ge  80  -a  $score -lt 90 ]
+		then 
+		  echo "level B";
+	  elif test  $score -ge  70  -a  $score -lt 80 
+		then 
+		  echo "level C";
+	  elif [ $score -ge  60 ] && [ $score -lt 70 ]
+		then 
+		  echo "level D";
+	  else
+		  echo 不及格;
+	  fi
+	  
+
+while循环
+  #读取文件内容
+  while read -r line
+  do
+	echo $line
+  done < /etc/passwd
+  
+  
+控制语句case语句
+  语法1：
+  case $变量名称 in
+		条件1）
+			命令序列
+			；；
+		条件2）
+			命令序列
+			；；
+		条件3）
+			命令序列
+			；；
+		*）
+		esac
+  语法2：
+  case $变量名称 in
+	条件1|条件2）
+  		命令序列
+  		；；
+	条件3|条件4）
+  		命令序列
+  		；；
+	条件5|条件6）
+  		命令序列
+  		；；
+	*）
+	esac
+ 
+ 
+ 
+ 
  《linux命令/编辑器和shell编程》
  
 
@@ -43,4 +207,22 @@
  alias 命令使用
   ls -la /home  给这个命令取个别名 llh
   alias llh='ls -la /home'   
+  
+  
+  
+  
+ history n     //显示最近的n笔命令的意思
+history -c    //将shell中所有的history命令全部删除
+history -a    //将目前新增的指令加入到histfiles中，如果不存在，则加入到~/.bash_history中
+history -w    //将内存中的history指令保持到histfile中
+history -r    //将histfile中的指令读取到这个shell中
+
+
+当使用bash登录后，去~/.bash_history中读取历史命令
+注销当前bash时，会将最近的HISTFILESIZE笔命令更新到~/.bash_history中,也可以使用history -w命令来强制更新
+  
+  
+  
+  
+  
  
