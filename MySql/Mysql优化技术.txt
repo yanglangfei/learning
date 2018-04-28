@@ -1,0 +1,51 @@
+对Mysql优化是一个综合性的技术。主要包括：
+1、表的设计合理化（符合 3NF）
+2、添加适当的索引（普通索引、主键索引、唯一索引、全文索引）
+3、分表技术（水平分割、垂直分割）
+4、读写分离
+5、存储过程（模块化编程，可以提高速度）
+6、配置优化（最多并发数:1000左右 max_connections、缓存大小）
+7、服务器硬件升级
+8、定时清除不需要的数据、定时进行碎片整理
+
+
+3范式（3NF）
+1NF：表的列具有原子性，不可在分解，即列的信息不能再分解。只要数据库是关系型数据库，就自动
+     满足1范式
+2NF：表中的记录是唯一的，通常通过设计主键实现唯一性
+3NF：表中不要有冗余数据，即表的信息如果可以推导出来，就不应该单独设计一个字段存放。    
+反3NF:在表的1对N的情况下，为了提高效率，可能会在1的这张表里设计冗余字段。
+
+
+Sql语句优化
+1、定位慢查询
+a、运行状态查询（当前连接数、sql执行次数，运行时间）  
+ mysql> show status like 'uptime'; 运行时间
+ mysql> show status like 'com_select';  执行select语句次数
+ show [session/global] status like ...  默认是session 会话，只查询当前窗口执行的sql
+ 如果想查询从MySQL启动到目前为止的sql语句执行次数需要加 global参数
+ mysql> show status like 'connections';  查询连接次数
+ netstat -anp  可以查看连接MySQL的客户端IP和端口信息，通过kill可以阻止连接
+ mysql> show status like 'slow_queries';  显示慢查询次数
+b、定位慢查询
+ 默认情况下，MySQL认为10秒才是慢查询
+ 修改MySQL慢查询时间  
+ mysql> show variables like 'long_query_time';  查询慢查询时间
+ mysql> set long_query_time=1;  修改慢查询时间为1秒
+c、这时如果出现一条sql语句执行时间超过1秒，将会被统计到慢查询次数。
+d、默认MySQL不会记录慢查询日志，需要在启动MySQL的时候，指定慢查询才可以
+ bin/mysqld.exe --safe-model --slow-query-log
+ 如果启用慢查询，默认日志存放在my.ini 中记录的位置 datadir=""
+e、优化
+  通过 explain 工具分析MySQL执行过程
+  添加索引：
+  //主键索引添加    
+  create table aaa
+  (id int unsigned primary key auto_increment,
+  name varchar(32) not null default '');     创建表时添加
+  alter table 表名 add primary key(列名);
+  查询索引：
+  desc 表名;  【缺点：不能显示索引的名字】
+  show index(es) from 表名;
+  show  keys from 表名;  
+	
