@@ -43,9 +43,39 @@ e、优化
   create table aaa
   (id int unsigned primary key auto_increment,
   name varchar(32) not null default '');     创建表时添加
-  alter table 表名 add primary key(列名);
+  alter table 表名 add primary key(列名);  修改表主键
+  //普通索引添加
+  普通索引一般是先创建表，然后在创建普通索引
+  create index 索引名 on 表名(列名1,列名2);
+  //创建全文索引  主要是针对文本的检索，比如文章，针对MyISAM有效；针对引文生效（sphinx-coreseek 中文）;
+  create table articles(
+   id int unsigned auto_increment not null primary key,
+   title varchar(200),
+   body text,
+   fulltext(title,body)
+  ) engine=myisam charset utf8;
+  insert into articles values ('mysql test1','11111'),('mysql test2','2222');
+  select * from articles where body like '%mysql%';  【错误用法】
+  select * from articles where match (title,body) against('mysql');
+  //唯一索引
+  create table bbb(id int primary key auto_increment,name varchar(10) unique);
+  unique 字段可以为null，并可以重复，但如果是具体的内容，则不能重复。
+  create unique index 索引名 on 表名(列名1,列名2); 
+  
   查询索引：
   desc 表名;  【缺点：不能显示索引的名字】
   show index(es) from 表名;
   show  keys from 表名;  
+  
+  删除索引
+  alert table 表名 drop index 索引名;
+  alert table 表名 drop primary key;
+  
+  修改索引
+  先删除，在创建
+  
+  满足以下条件的字段才应该创建索引:
+  where 条件后经常使用；内容不是唯一的几个值；字段内容不是频繁变化的。
+  
+  
 	
