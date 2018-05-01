@@ -1,0 +1,54 @@
+mac
+1、安装rtmp模块
+#brew install nginx-full --with-rtmp-module
+2、配置rtmp功能模块  nginx.conf
+
+rtmp {
+   server {
+     listen 1935;
+	 chunk_size 4000;  传输字节
+	 
+	 application live {  直播应用
+	   live on;
+	   record off;
+	   allow play all;
+	 }
+   }
+}
+
+
+3、通过 FFmpeg 工具进行推流、拉流
+#ffmpeg -i http://pcws.qing.mgtv.com/nn_live/nn_x64/bm5fdGltZXpvbmU90
+ CZjZG5leF9pZD13c19wY19saXZlMyZ1dWlkPTI5NjU2MjU3Ym0yMDRhnDU
+ mZT01MDUzNTMwJnY9MSZpZD1ITllMTVBQMzYwJnM9NjVjMjBlNjQ4ZDM1Z
+ Dhk0DM0OGZmNTNhOGYyYTO0YmY,/HNYLMPP360.flv?nn_timezone=8
+ -c:a copy -c :v copy -f flv rtmp://localhost:1935/live/room 
+ 
+4使用 flashplayer 进行播放
+
+使用 ffplay  进行播放
+#ffplay rtmp://localhost:1935/live/room
+
+
+
+
+
+[root@localhost local]# tar -zvxf nginx-1.4.7.tar.gz   
+
+[root@localhost local]# wget https://github.com/arut/nginx-rtmp-module/archive/v1.1.7.tar.gz  
+
+[root@localhost local]# tar nginx-rtmp-module-1.1.7.tar.gz   
+
+[root@localhost local]# tar -zxvf nginx-rtmp-module-1.1.7.tar.gz   
+
+[root@localhost local]# cd /usr/local/nginx-1.4.7  
+
+./configure --prefix=/usr/local/nginx --add-module=/usr/local/nginx-rtmp-module-1.1.7  
+
+[root@localhost nginx-1.4.7]# make && make install
+
+
+https://blog.csdn.net/kingroc/article/details/50839994
+https://blog.csdn.net/eguid_1/article/details/51749830
+https://www.cnblogs.com/suiyuewuxin/p/7256972.html 
+

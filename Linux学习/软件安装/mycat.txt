@@ -1,0 +1,68 @@
+mycat 
+1、安装 jdk
+#yum install java-1.7.0-openjdk
+2下载mycat
+#wget wget ~wget http://dl.mycat.io/1.6.5/Mycat-server-1.6.5-release-20171117203123-linux.tar.gz
+
+#adduser mycat
+#tar zxf Mycat-server-1.6.5-release-20171117203123-linux.tar.gz
+#mv mycat /usr/local
+#chown mycat:mycat -R mycat
+
+vim /etc/profile
+
+export JAVA_HOME=/usr
+export MYCAT_HOME=/usr/local/mycat
+
+3、启动 mycat
+#su -mycat
+#bin/startup_nowrap.sh
+
+
+4、配置
+schema.xml
+定义逻辑库表
+<schema>
+<table></table>
+</schema>
+定义数据节点
+<dataNode></dataNode>
+定义数据节点的物理数据源
+<dataHost></dataHost>
+rule.xml
+定义表使用的分片规则
+<tableRule name=""></tableRule>
+定义分片算法
+<function name=""></function>
+server.xml
+定义系统配置
+<system>
+<property name=""></property>
+</system>
+定义连接mycat的用户
+<user></user>
+
+
+
+schema.xml
+<schema name="USERDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+</schema>
+<dataNode name="dn1" dataHost="node1" database="user_db"/>
+<dataHost name="node1" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql"
+dbDriver="native" switchType="1" slaveThreshold="100" >
+<heartbeat>select user()</heartbeat>
+<writeHost host="192.168.1.100" url="192.168.1.100:3306" user="im_user" 
+password="admin123">
+<readHost host="192.168.1.101" url="192.168.1.101:3306" user="im_user" 
+password="admin123">
+</readHost>
+</writeHost>
+
+<writeHost host="192.168.1.101" url="192.168.1.101 :3306" user="im_user" 
+password="admin123">
+</writeHost>
+
+</dataHost>
+
+
+
