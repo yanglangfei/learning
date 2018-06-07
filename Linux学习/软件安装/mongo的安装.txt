@@ -5,3 +5,95 @@ mongorestore -h  ip地址:端口号 -d 数据库名 -u 用户名 -p 密码  备�
 单个表备份
 mongodump -h  ip地址:端口  -u 用户名 -p 密码 -d 数据库名 -c 表名  -o 备份文件保存路径
 
+
+https://www.mongodb.com/download-center#community
+
+
+下载完安装包，并解压 tgz
+curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz    # 下载
+tar -zxvf mongodb-linux-x86_64-3.0.6.tgz                                   # 解压
+
+mv  mongodb-linux-x86_64-3.0.6/ /usr/local/mongodb                         # 将解压包拷贝到指定目录
+
+
+MongoDB 的可执行文件位于 bin 目录下，所以可以将其添加到 PATH 路径中
+vi /etc/profile  
+
+export MONGODB_HOME=/usr/local/mongodb  
+export PATH=$PATH:$MONGODB_HOME/bin
+
+
+保存后，重启系统配置
+source /etc/profile
+
+启动配置
+
+cd /usr/local/mongodb/bin  
+vi mongodb.conf  
+  
+dbpath = /usr/local/mongodb/data/db #数据文件存放目录  
+logpath = /usr/local/mongodb/logs/mongodb.log #日志文件存放目录  
+port = 27017  #端口  
+fork = true  #以守护程序的方式启用，即在后台运行  
+nohttpinterface = true  
+
+启动配置保存退出，bin目录下就存在mongodb.conf文件。
+
+
+ 启动mongod数据库服务
+ ./mongod -f mongodb.conf
+
+
+进入mongodb数据库
+./mongo
+
+
+设置mongodb.service启动服务
+cd /lib/systemd/system  
+vi mongodb.service  
+  
+[Unit]  
+Description=mongodb  
+After=network.target remote-fs.target nss-lookup.target  
+  
+[Service]  
+Type=forking  
+ExecStart=/usr/local/mongodb/bin/mongod --config /usr/local/mongodb/bin/mongodb.conf  
+ExecReload=/bin/kill -s HUP $MAINPID  
+ExecStop=/usr/local/mongodb/bin/mongod --shutdown --config /usr/local/mongodb/bin/mongodb.conf  
+PrivateTmp=true  
+  
+[Install]  
+WantedBy=multi-user.target 
+
+
+设置mongodb.service权限
+chmod 754 mongodb.service
+
+系统mongodb.service操作命令
+#启动服务  
+systemctl start mongodb.service  
+#关闭服务  
+systemctl stop mongodb.service  
+#开机启动  
+systemctl enable mongodb.service 
+
+
+MongoDB 提供了简单的 HTTP 用户界面。 如果你想启用该功能，需要在启动的时候指定参数 --rest 。
+
+注意：该功能只适用于 MongoDB 3.2 及之前的早期版本。
+$ ./mongod --dbpath=/data/db --rest
+
+MongoDB 的 Web 界面访问端口比服务的端口多1000。
+
+如果你的MongoDB运行端口使用默认的27017，你可以在端口号为28017访问web用户界面，即地址为：http://localhost:28017。
+
+
+
+
+
+ 
+
+
+
+
