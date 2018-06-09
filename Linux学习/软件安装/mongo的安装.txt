@@ -90,8 +90,55 @@ MongoDB 的 Web 界面访问端口比服务的端口多1000。
 
 
 
+3. 启动mongodb
+cd到mongodb目录下的bin文件夹启动mongodb
+//下面这个是需要权限的登录方式, 用户连接需要用户名和密码
+./mongod --dbpath=/home/mongodb/data --logpath=/home/mongodb/logs --logappend  --auth  --port=27017 --fork
+//这个是不需要密码的
+./mongod --dbpath=/home/mongodb/data --logpath=/home/mongodb/logs --logappend  --port=27017 --fork
+或者
+在mongodb下面mongodb.conf中
+port=27017
+dbpath=/home/mongodb/data
+logpath=/home/mongodb/logs/mongodb.log
+pidfilepath=/home/mongodb/mongo.pid
+fork=true
+logappend=true
+#auth=true
+
+保存完后，回到bin目录下，输入
+./mongod --config /home/mongodb/my.cnf
+5，查看进程。
+netstat -lanp |grep 27017
 
 
+6，创建用户
+进入bin目录下，  输入./mongo 127.0.0.1:27017 连接到mongodb中，
+输入use test （MongoDB use DATABASE_NAME 用于创建数据库。
+该命令将创建一个新的数据库，如果它不存在，否则将返回现有的数据库。）
+
+创建用户名，密码和角色。
+db.createUser({user:"admin",pwd:"admin123",roles:[{role:"readWrite",db:"testdb"}]})
+至此，用户和密码已创建完毕。
+
+7，重新启动mongodb。查看mongodb。
+修改刚才的 mongodb.conf文件，在内容中添加 auth=true。 保存。
+重启mongodb，再登录到mongodb中，
+[root@iZ253cglmsxZ bin]# ./mongo 127.0.0.1:27017
+> use test
+> show collections
+
+2016-09-05T16:46:13.013+0800 E QUERY    [thread1] Error: listCollections failed: {
+"ok" : 0,
+"errmsg" : "not authorized on picadb to execute command { listCollections: 1.0, filter: {} }",
+"code" : 13
+} 
+
+> db.auth("testuser","1qaz@wsx")
+1
+> show collections
+movie
+查看成功表明 mongodb用户名和密码创建成功。
  
 
 
