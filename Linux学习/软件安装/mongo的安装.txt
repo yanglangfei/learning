@@ -31,8 +31,8 @@ source /etc/profile
 cd /usr/local/mongodb/bin  
 vi mongodb.conf  
   
-dbpath = /usr/local/mongodb/data/db #数据文件存放目录  
-logpath = /usr/local/mongodb/logs/mongodb.log #日志文件存放目录  
+dbpath = /usr/local/mongodb/data/db #数据文件存放目录 ---需要手动创建目录
+logpath = /usr/local/mongodb/logs/mongodb.log #日志文件存放目录  ---需要手动创建目录
 port = 27017  #端口  
 fork = true  #以守护程序的方式启用，即在后台运行  
 nohttpinterface = true  
