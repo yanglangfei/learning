@@ -1,0 +1,16 @@
+[2018-06-11 20:12:01] [info]  [ 4248] Commons Daemon procrun (1.1.0.0 64-bit) started
+[2018-06-11 20:12:01] [info]  [ 4248] Deleting service...
+[2018-06-11 20:12:01] [info]  [ 4248] Delete service finished.
+[2018-06-11 20:12:01] [info]  [ 4248] Commons Daemon procrun finished
+[2018-06-11 20:12:20] [info]  [ 6960] Commons Daemon procrun (1.1.0.0 64-bit) started
+[2018-06-11 20:12:20] [info]  [ 6960] Service tomcat1 name Apache Tomcat 9.0 tomcat1
+[2018-06-11 20:12:23] [info]  [ 6960] Service 'tomcat1' installed
+[2018-06-11 20:12:23] [info]  [ 6960] Commons Daemon procrun finished
+[2018-06-11 20:12:30] [info]  [ 8112] Commons Daemon procrun (1.1.0.0 64-bit) started
+[2018-06-11 20:12:30] [info]  [ 8112] Running 'tomcat1' Service...
+[2018-06-11 20:12:30] [info]  [ 6724] Starting service...
+[2018-06-11 20:12:31] [info]  [ 6724] Service started in 1341 ms.
+[2018-06-11 20:12:36] [info]  [ 7380] Stopping service...
+[2018-06-11 20:12:37] [info]  [ 7380] Service stop thread completed.
+[2018-06-11 20:12:37] [info]  [ 8112] Run service finished.
+[2018-06-11 20:12:37] [info]  [ 8112] Commons Daemon procrun finished

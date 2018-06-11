@@ -1,0 +1,4 @@
+[2018-06-11 19:36:40] [info]  [ 5448] Commons Daemon procrun (1.1.0.0 64-bit) started
+[2018-06-11 19:36:40] [info]  [ 5448] Service tomcat2 name Apache Tomcat 9.0 tomcat2
+[2018-06-11 19:36:43] [info]  [ 5448] Service 'tomcat2' installed
+[2018-06-11 19:36:43] [info]  [ 5448] Commons Daemon procrun finished
