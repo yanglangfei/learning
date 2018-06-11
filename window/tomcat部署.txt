@@ -30,7 +30,7 @@ G:\web\tomcat1\apache-tomcat-9.0.8
  
  在service.bat中搜索CATALINA_HOME，并全部替换为CATALINA_HOME1（与环境变量名保持一致）
  将 service.bat 中的 tomcat9.exe 全部替换为  tomcat1.exe
- 在bin目录下，找到tomcat9.exe和tomcat9w.exe，重命名为SERVICE_NAME配置的名字一致，这里重命名为tomcat9.exe和tomcat9w.exe
+ 在bin目录下，找到tomcat9.exe和tomcat9w.exe，重命名为SERVICE_NAME配置的名字一致，这里重命名为tomcat1.exe和tomcat1w.exe
 
 
 
@@ -41,7 +41,7 @@ service.bat install
 
 
 
-6、使用win+r输入services.msc进入服务界面，找到DISPLAYNAME对应的服务名（即Apache Tomcat 8.0 tomcat1），
+6、使用win+r输入services.msc进入服务界面，找到DISPLAYNAME对应的服务名（即Apache Tomcat 9.0 tomcat1），
 右键选择“属性”菜单，在“常规”选项卡选择“启动类型”为“自动”，或者进入tomcat bin目录 ,
 双击tomcat1w.exe，在弹出的界面选中General选项卡，选择Startup type为Automatic，即开机自启动
 
