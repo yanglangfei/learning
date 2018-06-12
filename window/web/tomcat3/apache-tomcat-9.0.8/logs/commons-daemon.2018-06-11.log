@@ -1,0 +1,4 @@
+[2018-06-11 19:37:13] [info]  [ 1340] Commons Daemon procrun (1.1.0.0 64-bit) started
+[2018-06-11 19:37:13] [info]  [ 1340] Service tomcat3 name Apache Tomcat 9.0 tomcat3
+[2018-06-11 19:37:16] [info]  [ 1340] Service 'tomcat3' installed
+[2018-06-11 19:37:17] [info]  [ 1340] Commons Daemon procrun finished
