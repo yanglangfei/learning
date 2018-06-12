@@ -54,3 +54,134 @@ http://10.200.80.255:8081
 https://blog.csdn.net/m0_37606574/article/details/79951478　
 
 
+7、卸载gitlab
+
+停止运行
+gitlab-ctl stop
+
+
+卸载
+rpm -e gitlab-ce
+
+
+查看进程
+ps aux | grep gitlab
+
+
+杀死第一个进程
+kill -9 18777
+
+
+删除所有包含gitlab的文件
+find / -name gitlab | xargs rm -rf
+
+
+
+8、下载最新gitlab
+1>、配置yum源
+vim /etc/yum.repos.d/gitlab-ce.repo
+复制以下内容：
+ 
+[gitlab-ce]
+name=Gitlab CE Repository
+baseurl=https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el$releasever/
+gpgcheck=0
+enabled=1
+
+2>、2、更新本地yum缓存
+sudo yum makecache
+
+3>、安装GitLab社区版
+sudo yum install gitlab-ce        #自动安装最新版
+sudo yum install gitlab-ce-x.x.x    #安装指定版本
+
+
+4>、继续安装提示执行配置 gitlab 的命令
+
+gitlab-ctl reconfigure
+修改 gitlab 的配置文件
+
+vim /etc/gitlab/gitlab.rb
+修改里面的 external_url 参数
+
+external_url='http://10.211.55.10'
+因为修改了配置文件，所以重新加载配置文件
+
+gitlab-ctl reconfigure
+
+
+汉化gitlab
+https://www.cnblogs.com/chenfool/p/7689438.html
+
+
+
+GitLab常用命令
+sudo gitlab-ctl start    # 启动所有 gitlab 组件；
+sudo gitlab-ctl stop        # 停止所有 gitlab 组件；
+sudo gitlab-ctl restart        # 重启所有 gitlab 组件；
+sudo gitlab-ctl status        # 查看服务状态；
+sudo gitlab-ctl reconfigure        # 启动服务；
+sudo vim /etc/gitlab/gitlab.rb        # 修改默认的配置文件；
+gitlab-rake gitlab:check SANITIZE=true --trace    # 检查gitlab；
+sudo gitlab-ctl tail        # 查看日志；
+GitLab使用
+登录GitLab
+1、在浏览器的地址栏中输入ECS服务器的公网IP即可登录GitLab的界面，
+第一次登录使用的用户名和密码为 root 和 5iveL!fe。
+
+
+
+
+https://www.cnblogs.com/restran/p/4063880.html
+
+
+
+一、使用官方安装包安装
+官方安装文档
+https://about.gitlab.com/downloads/
+
+1. 下载gitlab安装包
+https://downloads-packages.s3.amazonaws.com/ubuntu-14.04/gitlab_7.4.2-omnibus-1_amd64.deb
+官方文档使用wget，但是这个文件有280MB，还是用迅雷先下载好，速度比较快。
+
+2. 安装 openssh-server
+sudo apt-get install openssh-server
+3. 安装邮件服务器
+sudo apt-get install postfix
+
+
+
+gitlab 经常502解决方案
+https://blog.csdn.net/qq_25283709/article/details/78207881
+
+原因是gitlab占用内存太多，导致服务器崩溃
+
+默认情况下，阿里云云主机的swap功能是没有启用的，
+原因当然是通过取消swap功能可以降低磁盘IO的占用率来让用户购买更多的内存、
+提高磁盘寿命和性能
+
+
+
+解决办法,启用swap分区，步骤如下： 
+1.cat /proc/swaps 查看swap分区是否启动（无） 
+2.创建 ：
+
+dd if=/dev/zero of=/data/swap bs=512 count=8388616
+
+创建swap大小为bs*count=4294971392(4G)；
+
+/data/swap目录若无则找/mnt/swap（我这里是这个）
+3.通过mkswap命令将上面新建出的文件做成swap分区
+    mkswap /data/swap
+
+4.查看内核参数vm.swappiness中的数值是否为0，如果为0则根据实际需要调整成60
+
+查看： cat /proc/sys/vm/swappiness
+设置： sysctl -w vm.swappiness=60
+若想永久修改，则编辑/etc/sysctl.conf文件，改文件中有vm.swappiness变量配置，默认为0
+5.启用分区
+
+swapon /data/swap
+echo “/data/swap swap swap defaults 0 0” >> /etc/fstab
+6.再次使用cat /proc/swaps 查看swap分区是否启动:
+
