@@ -1,0 +1,51 @@
+jdk下载地址：jdk官方下载地址
+若上述jdk官方地址下载速度缓慢，则 点击这里：密码 821e
+eclipse下载地址： 点击这里：密码b380）
+
+1、检验系统原版本
+[root@localhost ~]# java -version
+java version "1.7.0_24"
+OpenJDK Runtime Environment (build 1.7.0_24-b18)
+OpenJDK HotSpot(TM) Client VM (build 24.45-b08, mixed mode, sharing)
+
+2、进一步查看JDK信息：
+[root@localhost ~]# rpm -qa | grep java
+tzdata-java-2012c-1.el6.noarch
+java-1.7.0-openjdk-1.7.0.45-1.45.1.11.1.el6.x86_64
+
+
+3、卸载OpenJDK，执行以下操作：
+[root@localhost ~]# rpm -e --nodeps tzdata-java-2012c-1.el6.noarch
+[root@localhost ~]# rpm -e --nodeps java-1.7.0-openjdk-1.7.0.45-1.45.1.11.1.el6.x86_64
+
+
+4、安装JDK
+上传新的jdk-7-linux-i586.rpm软件到/usr/local/执行以下操作：
+[root@localhost local]# rpm -ivh jdk-7-linux-i586.rpm
+
+JDK默认安装在/usr/java中。
+验证安装 
+执行以下操作，查看信息是否正常：
+
+[root@localhost bin]# java
+[root@localhost bin]# javac
+[root@localhost bin]# java -version
+
+
+
+修改系统环境变量文件 
+vi /etc/profile 
+向文件里面追加以下内容：
+
+JAVA_HOME=/usr/java/jdk1.7.0_45
+JRE_HOME=/usr/java/jdk1.7.0_45/jre
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+CLASSPATH=:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+export JAVA_HOME JRE_HOME PATH CLASSPATH
+
+使修改生效
+source /etc/profile
+
+
+
+https://blog.csdn.net/luckystar92/article/details/52029053
