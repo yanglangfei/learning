@@ -2,3 +2,45 @@
 
 http://www.wanqhblog.top/2017/12/29/%E4%BD%BF%E7%94%A8nginx%E4%BB%A3%E7%90%86%E8%AE%BF%E9%97%AEFastDFS%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6/
 
+fastdfs-nginx-module
+下载地址：https://github.com/happyfish100/fastdfs-nginx-module
+这里我从新安装nginx服务器，命令如下：如果是在现有的nginx上添加，可能会比较麻烦
+
+下载安装模块
+[root@localhost nginx]# wget https://github.com/happyfish100/fastdfs-nginx-module/archive/master.zip
+[root@localhost nginx]# unzip master.zip
+[root@localhost nginx]# cd nginx-1.9.0/
+[root@localhost nginx-1.9.0]#  ./configure --prefix=/usr/local/webserver/nginx --with-http_stub_status_module --with-pcre=/usr/local/nginx/pcre-8.41 --add-module=/usr/local/nginx/fastdfs-nginx-module-master/src
+[root@localhost nginx-1.9.0]# make
+[root@localhost nginx-1.9.0]# make install
+
+安装完成之后要三个配置文件拷贝到fastDFS的配置文件目录下，我这里是/etc/fdfs
+
+[root@localhost nginx-1.9.0]# cp /usr/local/nginx/fastdfs-nginx-module-master/src/mod_fastdfs.conf /etc/fdfs
+[root@localhost src]# cp /usr/local/fastdfs/fastdfs-5.11/conf/http.conf /etc/fdfs/
+[root@localhost src]# cp /usr/local//fastdfs/fastdfs-5.11/conf/mime.types /etc/fdfs/
+
+
+修改mod_fastdfs.conf 配置信息：
+
+
+[root@localhost bin]# vim /etc/fdfs/mod_fastdfs.conf
+
+base_path=/data/fastdfs/storage
+tracker_server=192.168.18.130:22122
+store_path0=/data/fastdfs/storage
+
+
+然后建立软连接：指向文件保存路径
+
+
+[root@localhost nginx-1.9.0]# ln -s /data/fastdfs/storage/data/ /data/fastdfs/storage/data/M00
+
+
+最后修改nginx的配置文件：添加location
+
+
+启动nginx：
+[root@localhost src]# /usr/local/webserver/nginx/sbin/nginx -s reload
+再次使用客户端测试类上传一张图片或者文件：
+

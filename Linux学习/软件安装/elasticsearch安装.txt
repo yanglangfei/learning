@@ -1,0 +1,203 @@
+由于elasticsearch是用Java写的，所以需要安装至少Java8以上版本。 
+
+下载elasticsearch
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.tar.gz
+sha1sum elasticsearch-5.2.2.tar.gz 
+tar -xzf elasticsearch-5.2.2.tar.gz
+
+其中sha1sum是用校验文件大小的。过程是： 
+1、先下载文件 
+https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.tar.gz.sha1 
+2、在执行
+
+sha1sum elasticsearch-5.2.2.tar.gz 
+显示出来的值与下载文件的值进行比对。
+命令tar -xzf elasticsearch-5.2.2.tar.gz是解压缩包。
+
+
+
+安装elasticsearch
+参考网上大神的个人习惯： 
+1、在/opt中创建setups文件夹，专门用来存放下载的第三方安装包。 
+我目前是放在centos7中home中的下载目录中。
+
+2、在/usr中创建programe_files文件夹，类似于window中的Programe Files文件夹。 
+用来存放安装的程序。
+
+所以我把解压好的elasticsearch-5.2.2文件夹剪切到/usr/programe_files/中。
+
+
+启动elasticsearch
+1、用命令行启动
+
+我们先进入到/usr/programe_files/elasticsearch-5.2.2
+
+./bin/elasticsearch
+启动后可以在命令行中看到
+
+
+我们在另开一个命令行窗口执行：
+curl http://localhost:9200
+
+返回的结果类似于：
+
+{
+  "name" : "XGt4N_o",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "qhA446xpR5WYwcVa5gTz7Q",
+  "version" : {
+    "number" : "5.2.2",
+    "build_hash" : "f9d9b74",
+    "build_date" : "2017-02-24T17:26:45.835Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.4.1"
+  },
+  "tagline" : "You Know, for Search"
+}
+
+
+作为守护进程来启动
+由于上面的启动方式会占用命令行，所以可以作为守护进程来启动，这样就不会占用命令行窗口啦。 
+要作为守护进程： 
+① 添加 -d参数即可。
+
+./bin/elasticsearch -d -p pid
+后面的-p pid会在当前目录中生成pid文件，里面记录了进程的IP。
+
+要关闭elasticsearch我们在当前目录执行：
+
+kill `cat pid`
+
+注意： 
+假设我们不小心把pid文件删除啦，执行上面的语句是有问题的。 
+这时我们需要手动这么做： 
+①执行ps -ef | grep elasticsearch 找到进程id 
+②执行kill 找的的进程id。
+
+但是呢？我觉得这样启动记得命令太多了，所以我写成了一个shell脚本。
+
+#!/bin/bash
+if [ $1 == "start" ];then
+./bin/elasticsearch -d -p pid
+elif [ $1 == "stop" ];then
+kill `cat pid`
+else
+echo "Please make sure the position variable is start or stop."
+fi
+
+这样我就可以这样来执行: 
+(elasticsearch.sh脚本是保存在elasticsearch的安装目录中。）
+
+启动命令：
+
+[yutao@localhost elasticsearch-5.2.2]$ ./elasticsearch.sh start
+1
+关闭命令
+
+[yutao@localhost elasticsearch-5.2.2]$ ./elasticsearch.sh stop
+
+我这种方式还有一个弊端就是每次都要进入安装目录才可以执行命令，要是能像Linux命令那样到哪里都能执行就好了。
+
+将自己写的es脚本变成系统的新命令
+解决办法： 
+①把脚本放到usr/bin的目录中 
+②调整好脚本
+
+我调整后的脚本：
+#!/bin/bash
+# 先进入相关目录
+cd /usr/programe_files/elasticsearch-5.2.2/
+if [ $1 == "start" ];then
+./bin/elasticsearch -d -p pid
+elif [ $1 == "stop" ];then
+kill `cat pid`
+else
+echo "Please make sure the position variable is start or stop."
+fi
+
+
+这里对系统几个bin目录进行讲解：
+
+bin: 
+bin为binary的简写，主要放置系统的必备执行文件，例如: 
+cat、cp、chmod df、dmesg、gzip、kill、ls、mkdir、more、mount、rm、su、tar等。 
+
+/usr/bin: 
+主要放置应用程序工具的必备执行文件，例如： 
+c++、g++、gcc、chdrv、diff、dig、du、eject、elm、free、gnome*、 gzip、htpasswd、kfm、ktop、last、less、locale、m4、make、man、mcopy、ncftp、 newaliases、nslookup passwd、quota、smb*、wget等。 
+
+/sbin: 
+主要放置系统管理的必备程序，例如: 
+cfdisk、dhcpcd、dump、e2fsck、fdisk、halt、ifconfig、ifup、 ifdown、init、insmod、lilo、lsmod、mke2fs、modprobe、quotacheck、reboot、rmmod、 runlevel、shutdown等。 
+
+/usr/sbin: 
+主要放置网路管理的必备程序，例如: 
+dhcpd、httpd、imap、in.*d、inetd、lpd、named、netconfig、nmbd、samba、sendmail、squid、swap、tcpd、tcpdump等
+
+因此可以任意在/usr/bin目录下建脚本就会形成新的系统命令。
+
+
+window中访问虚拟机中的elasticsearch服务
+虽然就此安装好了，但是我的centos7是安装在VMware workspace12虚拟机中的。但是我想在我的本机window的浏览器中也能通过192.168.116.128:9200来访问。
+
+步骤 1、 修改配置文件
+进入到config中
+
+vim elasticsearch.yml
+
+找到：
+
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+#network.host: 192.168.0.1
+
+将其修改为：
+
+将其修改为：
+
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+#network.host: 192.168.0.1
+network.host: 192.168.116.128 #这里ip地址随便填，我是填写虚拟机的IP地址
+
+保存后，再次启动elasticsearch。 
+结果报错啦。
+
+错误两个：
+
+max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]
+max file descriptors [4096] for elasticsearch process likely too low, increase to at least [65536]
+大概的意思就是： 
+①系统的vm.max_map_count设置过小，至少需要262144才行。 
+②elasticsearch的进程描述文件过小至少需要65536，而现在只有4096。
+
+①解决办法：
+修改配置文件：
+
+sudo vim /etc/sysctl.conf
+在文件最后添加：
+vm.max_map_count=262144
+查看是否添加成功：
+
+ sudo sysctl -p
+显示：
+
+vm.max_map_count = 262144
+②解决办法
+执行
+sudo vim /etc/security/limits.conf
+在文件最后添加：
+
+在文件最后添加：
+
+yutao    soft    nofile          65536
+yutao    hard    nofile          65536
+其中yutao为登陆centos7的用户名。
+
+这里需要注意一定要重启系统否则不会生效。
+
+再次启动elasticsearch就不会保错啦。
+
+
+https://blog.csdn.net/u013066244/article/details/61623660
+https://www.biaodianfu.com/centos-7-install-elasticsearch.html
