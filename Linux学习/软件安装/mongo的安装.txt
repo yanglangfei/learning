@@ -30,7 +30,7 @@ source /etc/profile
 
 cd /usr/local/mongodb/bin  
 vi mongodb.conf  
-  
+bindIp:0.0.0.0  #启用远程访问
 dbpath = /usr/local/mongodb/data/db #数据文件存放目录 ---需要手动创建目录
 logpath = /usr/local/mongodb/logs/mongodb.log #日志文件存放目录  ---需要手动创建目录
 port = 27017  #端口  
@@ -42,6 +42,10 @@ nohttpinterface = true
 
  启动mongod数据库服务
  ./mongod -f mongodb.conf
+### /usr/local/mongodb/bin/mongod -f /etc/mongod.conf
+
+停止 mongo
+pkill mongo
 
 
 进入mongodb数据库
