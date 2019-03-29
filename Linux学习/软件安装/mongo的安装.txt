@@ -48,6 +48,8 @@ nohttpinterface = true
 pkill mongo
 
 $ ps -ef | grep mongo
+## 端口占用查询
+$ lsof -i tcp:27017
 
 
 进入mongodb数据库
