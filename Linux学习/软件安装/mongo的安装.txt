@@ -47,6 +47,8 @@ nohttpinterface = true
 停止 mongo
 pkill mongo
 
+$ ps -ef | grep mongo
+
 
 进入mongodb数据库
 ./mongo
