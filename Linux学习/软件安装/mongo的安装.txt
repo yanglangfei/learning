@@ -118,7 +118,9 @@ netstat -lanp |grep 27017
 
 6，创建用户
 进入bin目录下，  输入./mongo 127.0.0.1:27017 连接到mongodb中，
-输入use test （MongoDB use DATABASE_NAME 用于创建数据库。
+### show dbs;  显示所有的数据库
+### db.user.drop();  删除user 表
+###  use test （MongoDB use DATABASE_NAME 用于创建数据库。
 该命令将创建一个新的数据库，如果它不存在，否则将返回现有的数据库。）
 
 创建用户名，密码和角色。
