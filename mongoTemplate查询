@@ -1,0 +1,40 @@
+
+1、精确查询用“is”
+
+            Criteria criteria=new Criteria("namespaceName");
+            criteria.is(namespaceName);
+            Query query = new Query(criteria);
+            return mongoTemplate.find(query,StorageBO.class,StorageConstant.STORAGE_COLLECTION_NAME);
+2、模糊查询用“regex”
+
+            Criteria criteria=new Criteria("storageName");
+            criteria.regex(storageName);
+            Query query = new Query(criteria);
+            return mongoTemplate.find(query,StorageBO.class,StorageConstant.STORAGE_COLLECTION_NAME);
+3、模糊查询示例2
+
+复制代码
+//完全匹配
+Pattern pattern = Pattern.compile("^hzb$", Pattern.CASE_INSENSITIVE);
+//右匹配
+Pattern pattern = Pattern.compile("^.*hzb$", Pattern.CASE_INSENSITIVE);
+//左匹配
+Pattern pattern = Pattern.compile("^hzb.*$", Pattern.CASE_INSENSITIVE);
+//模糊匹配
+Pattern pattern = Pattern.compile("^.*hzb.*$", Pattern.CASE_INSENSITIVE);
+Query query = Query.query(Criteria.where(fieldName).regex(pattern));  
+        List<StorageBO> storages = mongoTemplate.find(query, StorageBO.class, collectionName);
+        return storages;
+复制代码
+ 4、按createTime降序排序
+
+以下红色部分是排序设置
+
+复制代码
+            Criteria criteria=new Criteria("namespaceName");
+            criteria.is(namespaceName);
+            criteria.and("tenantName").is(tenantName);
+            Query query = new Query(criteria);
+            query.with(new Sort(Sort.Direction.DESC,   "createTime"));
+            return mongoTemplate.find(query,StorageBO.class,StorageConstant.STORAGE_COLLECTION_NAME);
+复制代码
