@@ -1,0 +1,45 @@
+
+二月 28, 2017张友东的博客zydcom
+MongoDB 3.4 支持了 Collation特性，官方文档对这个特性的解释是
+
+>Collation allows users to specify language-specific rules for string comparison, such as rules for lettercase and accent marks.
+>
+
+简而言之，Collation特性允许MongoDB的用户根据不同的语言定制排序规则，举个例子，一个存储中国用户信息的集合。
+
+db.createCollection("person")
+db.person.insert({name: "张三"})
+db.person.insert({name: "李四"})
+db.person.insert({name: "王五"})
+db.person.insert({name: "马六"})
+db.person.insert({name: "张七"})
+默认情况下，名字字段会被当做一个普通的二机制字符串来对比，按照name字段排序的结果如下
+
+mongo-9554:PRIMARY&gt; db.person.find().sort({name: 1})
+{ "_id" : ObjectId("586b98980cec8d86881cffac"), "name" : "张七" }
+{ "_id" : ObjectId("586b98980cec8d86881cffa8"), "name" : "张三" }
+{ "_id" : ObjectId("586b98980cec8d86881cffa9"), "name" : "李四" }
+{ "_id" : ObjectId("586b98980cec8d86881cffaa"), "name" : "王五" }
+{ "_id" : ObjectId("586b98980cec8d86881cffab"), "name" : "马六" }
+而对于中文名字，通常有按拼音顺序排序的需求，这时就可以通过collation来搞定
+
+db.createCollection("person", {collation: {locale: "zh"}})
+db.person.insert({name: "张三"})
+db.person.insert({name: "李四"})
+db.person.insert({name: "王五"})
+db.person.insert({name: "马六"})
+db.person.insert({name: "张七"})
+此时再按name字段排序，则会按照locale指定的中文规则来排序
+
+mongo-9554:PRIMARY&gt; db.person.find().sort({name: 1})
+{ "_id" : ObjectId("586b995d0cec8d86881cffae"), "name" : "李四" }
+{ "_id" : ObjectId("586b995d0cec8d86881cffb0"), "name" : "马六" }
+{ "_id" : ObjectId("586b995d0cec8d86881cffaf"), "name" : "王五" }
+{ "_id" : ObjectId("586b995d0cec8d86881cffb1"), "name" : "张七" }
+{ "_id" : ObjectId("586b995d0cec8d86881cffad"), "name" : "张三" }
+MongoDB 3.4里，基本所有设计字符串字段排序的命令，都支持指定collation，比如「创建集合、创建索引、find」等；上述例子里在createCollection的时候指定了collation，则该集合里所有字符串默认都会按指定的collation来排序，如果只想针对某一个字段来指定collation，可以该字段创建指定collation的索引，例如
+
+db.person.createIndex({name: 1}, {collation: {locale: "zh"}})
+注意：如果是从3.2版本升级到3.4的，需要先执行如下命令才能使用collation特性
+
+db.adminCommand( { setFeatureCompatibilityVersion: "3.4" } )
