@@ -1,3 +1,5 @@
+https://www.cnblogs.com/caoguo/p/4625662.html 
+
 1、下载redis安装包
 下载链接  http://redis.io/download
 $ wget http://download.redis.io/releases/redis-2.8.17.tar.gz
