@@ -1,3 +1,6 @@
+
+https://blog.csdn.net/hyy11111/article/details/87949732
+
 https://blog.csdn.net/fenghan2015/article/details/82664882
 备份
 mongodump -h  ip地址:端口号  -u 用户名 -p 密码 -d 数据库名  -o 保存路径
