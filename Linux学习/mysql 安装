@@ -19,4 +19,24 @@ https://blog.csdn.net/a_18397219871/article/details/79466392
 
 
 
+需求：
+把MySQL数据库目录中的dz数据库备份到/home/dz_bak.sql ，然后再新建一个数据库dzbak，最后把/home/dz_bak.sql 导入到数据库dzbak中。
+
+操作如下：以下操作均在终端命令行下进行 
+
+
+1、mysqldump -u root -p dz > /home/dz_bak.sql        #导出数据库
+     123456     #输入数据库密码
+     扩展：
+     mysqldump -u root -p dz pre_portal_comment >  /home/pre_portal_comment_bak.sql  #导出数据库中的某个表
+     
+2、mysql -uroot -p    #进入MySQL数据库控制台
+     123456     #输入数据库密码
+     show databases;    #查看数据库
+     create database dzbak;      #创建新数据库dzbak
+     use dzbak      #进入dzbak数据库目录
+     source /home/dz_bak.sql     导入dz_bak.sql到数据库dzbak中
+
+
+至此，Linux系统下MySQL数据库导出导入操作完成，Windows 系统下操作类似，请大家自行测试。
 
