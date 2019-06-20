@@ -48,8 +48,12 @@ connecting to: test
 local  0.078GB
 test   0.078GB
 > use local
+> show collections
 
 
 如果  a.a_3 不存在，将 a.a_3 设置为610000
 
 db.getCollection('householdArchives').updateMany({'a.a_3':{'$exists':false}},{'$set':{'a.a_3':'610000'}})
+
+
+db.householdArchives.updateMany({"a.a_4":"安康市"},{'$set':{"a.a_5":"610902","a.a_4":"610900","a.a_3":"610000"}})
