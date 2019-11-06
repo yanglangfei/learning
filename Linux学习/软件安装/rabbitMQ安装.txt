@@ -2,6 +2,10 @@ Erlang的安装方式大概有两种：
 1、从Erlang Solution安装(推荐)
  # 添加erlang solutions源
  $ wget https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
+ 
+ 错误 ： epel-release is needed by erlang-solutions-1.0-1.noarch
+   执行 ：sudo yum install epel-release
+ 
  $ sudo rpm -Uvh erlang-solutions-1.0-1.noarch.rpm
  
  $ sudo yum install erlang
